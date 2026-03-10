@@ -23,7 +23,9 @@ CONF_LOCATION_ID: Final = "location_id"
 CONF_LOCATION_NAME: Final = "location_name"
 CONF_POLLEN_TYPES: Final = "pollen_types"
 CONF_UPDATE_FREQUENCY: Final = "update_frequency"
+CONF_LANGUAGE: Final = "language"
 DEFAULT_UPDATE_FREQUENCY: Final = 3
+DEFAULT_LANGUAGE: Final = "nb"
 
 BASE_URL: Final = "https://www.yr.no/api/v0/locations"
 
@@ -35,6 +37,7 @@ class PollenDataCoordinator(DataUpdateCoordinator):
         self,
         hass: HomeAssistant,
         location_id: str,
+        language: str = DEFAULT_LANGUAGE,
         update_frequency: int = DEFAULT_UPDATE_FREQUENCY,
     ) -> None:
         """Initialize coordinator."""
@@ -45,6 +48,7 @@ class PollenDataCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(hours=update_frequency),
         )
         self.location_id = location_id
+        self.language = language
         self.region_name: str = location_id
         self.last_updated_at: str | None = None
         self.data = {"today": {}, "tomorrow": {}}
@@ -53,7 +57,7 @@ class PollenDataCoordinator(DataUpdateCoordinator):
         """Fetch pollen data from NAAF API."""
         try:
             async with aiohttp.ClientSession() as session:
-                url = f"{BASE_URL}/{self.location_id}/pollen?language=nb"
+                url = f"{BASE_URL}/{self.location_id}/pollen?language={self.language}"
                 async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
                     if resp.status != 200:
                         raise UpdateFailed(f"API returned {resp.status}")
@@ -77,11 +81,13 @@ class PollenDataCoordinator(DataUpdateCoordinator):
                     if "pollenTypes" in level_data:
                         distribution_name = level_data.get("distributionName")
                         for pollen in level_data["pollenTypes"]:
+                            pollen_id = pollen.get("id")
                             pollen_name = pollen.get("name")
-                            if pollen_name:
-                                parsed_data[day_key][pollen_name] = {
+                            if pollen_id:
+                                parsed_data[day_key][pollen_id] = {
                                     "level": level,
                                     "level_name": distribution_name,
+                                    "pollen_name": pollen_name,
                                     "date": date,
                                 }
 
@@ -104,6 +110,7 @@ async def async_setup_entry(
     locations = config_data.get(CONF_LOCATIONS, [])
     pollen_types = config_data.get(CONF_POLLEN_TYPES, [])
     update_frequency = config_data.get(CONF_UPDATE_FREQUENCY, DEFAULT_UPDATE_FREQUENCY)
+    language = config_data.get(CONF_LANGUAGE, DEFAULT_LANGUAGE)
 
     entities = []
 
@@ -112,7 +119,7 @@ async def async_setup_entry(
         custom_location_name = location.get(CONF_LOCATION_NAME)
 
         # Create coordinator for this location
-        coordinator = PollenDataCoordinator(hass, location_id, update_frequency)
+        coordinator = PollenDataCoordinator(hass, location_id, language, update_frequency)
         await coordinator.async_config_entry_first_refresh()
 
         # Display name is custom name or region name from API
@@ -176,14 +183,14 @@ class PollenSensor(CoordinatorEntity, SensorEntity):
         self._attr_icon = self._get_icon()
 
     def _get_icon(self) -> str:
-        """Get icon based on pollen type (Norwegian names)."""
+        """Get icon based on pollen type."""
         icons = {
-            "hassel": "mdi:tree",
-            "or": "mdi:tree",
-            "salix": "mdi:tree",
-            "bjørk": "mdi:tree",
-            "gress": "mdi:grass",
-            "burot": "mdi:flower",
+            "hazel": "mdi:tree",
+            "alder": "mdi:tree",
+            "willow": "mdi:tree",
+            "birch": "mdi:tree",
+            "grass": "mdi:grass",
+            "mugwort": "mdi:flower",
         }
         return icons.get(self.pollen_type.lower(), "mdi:flower-pollen")
 
@@ -205,6 +212,7 @@ class PollenSensor(CoordinatorEntity, SensorEntity):
 
         attrs: dict[str, Any] = {
             "date": pollen_data.get("date"),
+            "pollen_name": pollen_data.get("pollen_name"),
             "region_name": self.coordinator.region_name,
             "last_updated": self.coordinator.last_updated_at,
         }

@@ -14,6 +14,7 @@ CONF_LOCATION_ID: Final = "location_id"
 CONF_LOCATION_NAME: Final = "location_name"
 CONF_POLLEN_TYPES: Final = "pollen_types"
 CONF_UPDATE_FREQUENCY: Final = "update_frequency"
+CONF_LANGUAGE: Final = "language"
 
 PLATFORMS = ["sensor"]
 

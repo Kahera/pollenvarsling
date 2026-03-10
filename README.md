@@ -21,29 +21,36 @@ Add this to your `configuration.yaml`:
 ```yaml
 pollenvarsel_naaf_yr:
   pollen_types:
-    - Hassel
-    - Or
-    - Salix
-    - Bjørk
-    - Gress
-    - Burot
+    - hazel # Hassel
+    - alder # Or
+    - willow # Salix NOTE: id needs verification when pollen season begins
+    - birch # Bjørk NOTE: id needs verification when pollen season begins
+    - grass # Gress NOTE: id needs verification when pollen season begins
+    - mugwort # Burot NOTE: id needs verification when pollen season begins
   locations:
     - location_id: "1-189277"
       location_name: "Molde" # Optional
     - location_id: "1-92416"
-  update_frequency: 1 # Hours
+  language: nb # Optional (default: nb)
+  update_frequency: 1 # Hours (optional, default: 3)
 ```
 
 ### Configuration Options
 
-- **pollen_types** (required): List of pollen types to track. Avaliable types:
-  `Hassel`, `Or`, `Salix`, `Bjørk`, `Gress`, `Burot`
+- **pollen_types** (required): List of pollen types to track (language-independent IDs). Available types:
+  `hazel`, `alder`, `willow`, `birch`, `grass`, `mugwort`
 
 - **locations** (required): List of locations to monitor
   - **location_id** (required): YR location ID (found in the API URL)
   - **location_name** (optional): Your custom name for the location
 
-If no 
+- **language** (optional): Language for pollen type names and distribution levels. Default: `nb`
+  - `nb` - Norwegian bokmål
+  - `nn` - Norwegian nynorsk
+  - `sme` - Northern Sami
+  - `en` - English
+
+- **update_frequency** (optional): How often to fetch data, in hours. Default: `3`
 
 ## Finding Location IDs
 
@@ -68,6 +75,8 @@ For each pollen type and location, the integration creates two sensors:
 - `extreme` - Extreme pollen level
 
 ### Sensor Attributes
+- `pollen_name` - Localized name of the pollen type (e.g., "Hassel" in nb, "Hazel" in en)
+- `level_name` - Localized distribution level name (e.g., "Beskjeden", "Moderat")
 - `date` - Forecast date
 - `region_name` - Region name fetched from the API
 - `location_name` - Custom name as set in the configuration, if present
@@ -80,10 +89,10 @@ automation:
   - alias: "High Pollen Alert"
     trigger:
       - platform: state
-        entity_id: sensor.pollen_bjørk_molde_today
+        entity_id: sensor.pollen_birch_molde_today
         to: "high"
       - platform: state
-        entity_id: sensor.pollen_bjørk_molde_today
+        entity_id: sensor.pollen_birch_molde_today
         to: "extreme"
     action:
       - service: notify.mobile_app_phone
@@ -100,5 +109,5 @@ Data is fetched every 3 hours by default. To customize, add the `update_frequenc
 If sensors don't appear:
 1. Restart Home Assistant
 2. Check that location IDs are correct
-3. Verify pollen type names match exactly the Norwegian names returned by the API (case-sensitive)
+3. Verify pollen type IDs are correct (use the language-independent IDs: `hazel`, `alder`, `willow`, `birch` `grass`, `mugwort`)
 4. Check Home Assistant logs for errors
