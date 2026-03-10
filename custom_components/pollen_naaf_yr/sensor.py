@@ -27,6 +27,13 @@ CONF_LANGUAGE: Final = "language"
 DEFAULT_UPDATE_FREQUENCY: Final = 3
 DEFAULT_LANGUAGE: Final = "nb"
 
+TRANSLATIONS: Final = {
+    "nb": {"today": "I dag", "tomorrow": "I morgen", "pollen": "Pollen"},
+    "nn": {"today": "I dag", "tomorrow": "I morgon", "pollen": "Pollen"},
+    "sme": {"today": "Odne", "tomorrow": "Ihttin", "pollen": "Pollen"},
+    "en": {"today": "Today", "tomorrow": "Tomorrow", "pollen": "Pollen"},
+}
+
 BASE_URL: Final = "https://www.yr.no/api/v0/locations"
 
 
@@ -171,16 +178,27 @@ class PollenSensor(CoordinatorEntity, SensorEntity):
         self.location_id = location_id
         self.custom_location_name = custom_location_name
         self.entry_id = entry_id
+        self._display_name = custom_location_name or coordinator.region_name
 
-        day_text = "Today" if day == "today" else "Tomorrow"
-        display_name = custom_location_name or coordinator.region_name
-
-        self._attr_name = f"Pollen {pollen_type} {display_name} {day_text}"
         self._attr_unique_id = (
             f"{DOMAIN}_{location_id}_{pollen_type.lower()}_{day}"
         )
         self._attr_device_info = device_info
         self._attr_icon = self._get_icon()
+
+    @property
+    def name(self) -> str:
+        """Return localized sensor name."""
+        language = self.coordinator.language
+        translations = TRANSLATIONS.get(language, TRANSLATIONS["en"])
+        day_text = translations[self.day]
+
+        # Use localized pollen name from API data if available
+        today_data = self.coordinator.data.get("today", {})
+        pollen_data = today_data.get(self.pollen_type, {})
+        pollen_name = pollen_data.get("pollen_name", self.pollen_type)
+
+        return f"{translations['pollen']} {pollen_name} {self._display_name} {day_text}"
 
     def _get_icon(self) -> str:
         """Get icon based on pollen type."""

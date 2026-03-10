@@ -4,6 +4,7 @@
   "name": "NAAF/Yr Pollen Forecast",
   "codeowners": ["@kahera"],
   "config_flow": true,
+  "icon": "mdi:flower-pollen",
   "documentation": "https://github.com/Kahera/pollenvarsling",
   "homeassistant": "2026.3.0",
   "requirements": ["aiohttp"],

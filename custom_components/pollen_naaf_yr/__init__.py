@@ -23,7 +23,7 @@ PLATFORMS = ["sensor"]
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up NAAF Pollen from configuration.yaml."""
+    """Set up NAAF/Yr Pollen from configuration.yaml."""
     if DOMAIN not in config:
         return True
 
@@ -68,7 +68,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up NAAF Pollen from config entry."""
+    """Set up NAAF/Yr Pollen from config entry."""
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = entry.data
     
