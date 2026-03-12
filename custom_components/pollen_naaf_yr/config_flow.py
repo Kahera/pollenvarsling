@@ -8,13 +8,13 @@ from . import DOMAIN
 
 
 class PollenvarselConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for NAAF/YR Pollen Forecast."""
+    """Handle a config flow for NAAF/Yr Pollen Forecast."""
 
     VERSION = 1
 
     async def async_step_import(self, import_data: dict[str, Any]) -> FlowResult:
         """Handle import of configuration from configuration.yaml."""
         return self.async_create_entry(
-            title="NAAF/YR Pollen Forecast",
+            title="NAAF/Yr Pollen Forecast",
             data=import_data,
         )

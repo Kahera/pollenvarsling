@@ -56,7 +56,7 @@ async def async_setup_entry(
         device_info = DeviceInfo(
             identifiers={(DOMAIN, location_id)},
             name=display_name,
-            manufacturer="YR/NAAF",
+            manufacturer="NAAF/Yr",
         )
 
         # Create sensors for each pollen type and forecast day
