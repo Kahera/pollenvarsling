@@ -41,7 +41,7 @@ pollenvarsel_naaf_yr:
   `hazel`, `alder`, `willow`, `birch`, `grass`, `mugwort`
 
 - **locations** (required): List of locations to monitor
-  - **location_id** (required): YR location ID (found in the API URL)
+  - **location_id** (required): YR location ID (found in the API URL - see below for details)
   - **location_name** (optional): Your custom name for the location
 
   >  ℹ️: Only locations in mainland Norway will work.

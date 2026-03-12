@@ -1,23 +1,19 @@
 """NAAF Pollen Forecast Integration."""
 import logging
-from typing import Final
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
+from .const import (
+    CONF_LANGUAGE,
+    CONF_POLLEN_TYPES,
+    DOMAIN,
+    VALID_LANGUAGES,
+    VALID_POLLEN_TYPES,
+)
+
 _LOGGER: logging.Logger = logging.getLogger(__name__)
-
-DOMAIN: Final = "pollenvarsel_naaf_yr"
-CONF_LOCATIONS: Final = "locations"
-CONF_LOCATION_ID: Final = "location_id"
-CONF_LOCATION_NAME: Final = "location_name"
-CONF_POLLEN_TYPES: Final = "pollen_types"
-CONF_UPDATE_FREQUENCY: Final = "update_frequency"
-CONF_LANGUAGE: Final = "language"
-
-VALID_POLLEN_TYPES: Final = {"hazel", "alder", "willow", "birch", "grass", "mugwort"}
-VALID_LANGUAGES: Final = {"nb", "nn", "sme", "en"}
 
 PLATFORMS = ["sensor"]
 
