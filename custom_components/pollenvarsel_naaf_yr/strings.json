@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "NAAF/Yr Pollen Forecast",
-        "description": "Enter the Yr location ID (e.g., indre-østlandet)",
+        "description": "Enter the Yr location ID (e.g., 1-189277)",
         "data": {
           "location_id": "Location ID",
           "pollen_types": "Pollen Types",

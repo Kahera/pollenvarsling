@@ -60,11 +60,7 @@ class PollenvarselConfigFlow(ConfigFlow, domain=DOMAIN):
 
         schema = vol.Schema(
             {
-                vol.Required(CONF_LOCATION_ID): selector.TextSelector(
-                    selector.TextSelectorConfig(
-                        placeholder="e.g., 1-189277"
-                    ),
-                ),
+                vol.Required(CONF_LOCATION_ID): selector.TextSelector(),
                 vol.Required(
                     CONF_POLLEN_TYPES,
                     default=list(VALID_POLLEN_TYPES),
