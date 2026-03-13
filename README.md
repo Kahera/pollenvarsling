@@ -41,10 +41,10 @@ Configuration is done through the Home Assistant UI — no `configuration.yaml` 
 
 - **Update Frequency** (optional): How often to fetch a new forecast, in hours. Default: `3`
 
-- **Language** (optional): Language used for sensor names and API data. Default: `nb`
-  - `nb` - Norwegian bokmål
-  - `nn` - Norwegian nynorsk
-  - `en` - English
+- **Language** (optional): Language used for sensor names and API data. Default: Norwegian bokmål
+  - Norwegian bokmål
+  - Norwegian nynorsk
+  - English
 
 ## Finding Location IDs
 

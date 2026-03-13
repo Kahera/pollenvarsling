@@ -4,9 +4,9 @@
   "name": "NAAF/Yr Pollen Forecast",
   "codeowners": ["@kahera"],
   "config_flow": true,
-  "documentation": "https://github.com/Kahera/ha-pollenvarsling",
-  "icon": "icon.png",
+  "documentation": "https://github.com/Kahera/HA_pollen_forecast",
+  "issue_tracker": "https://github.com/Kahera/HA_pollen_forecast/issues",
   "homeassistant": "2026.3.0",
-  "requirements": ["aiohttp"],
-  "version": "1.0.0"
+  "requirements": [],
+  "version": "0.1.0"
 }
