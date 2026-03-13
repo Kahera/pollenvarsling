@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import slugify
 
 from .const import (
     CONF_LOCATION_ID,
@@ -102,6 +103,7 @@ class PollenSensor(CoordinatorEntity, SensorEntity):
         self._attr_unique_id = (
             f"{entry_id}_{location_id}_{pollen_type.lower()}_{day}"
         )
+        self.entity_id = f"sensor.pollen_{pollen_type}_{slugify(self._display_name)}_{day}"
         self._attr_device_info = device_info
         self._attr_icon = self._get_icon()
 
@@ -116,7 +118,7 @@ class PollenSensor(CoordinatorEntity, SensorEntity):
         
         # Get localized pollen name from translations
         selector = translations.get("selector", {})
-        pollen_labels = selector.get("pollen_type", {}).get("label", {})
+        pollen_labels = selector.get("pollen_type", {}).get("options", {})
         pollen_name = pollen_labels.get(self.pollen_type, self.pollen_type.capitalize())
         
         return f"{pollen_name} {day_text} ({self._display_name})"

@@ -23,7 +23,7 @@ Configuration is done through the Home Assistant UI — no `configuration.yaml` 
 3. Search for **Pollenvarsel** and select it
 4. Fill in the form:
 
-### Configuration Options
+### Configuration
 
 - **Location ID** (required): The Yr location ID. The code can be found in the URL of the location on yr.no (see [Finding Location IDs](#finding-location-ids) below).
 
