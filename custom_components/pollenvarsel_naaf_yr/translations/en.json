@@ -3,12 +3,20 @@
     "step": {
       "user": {
         "title": "NAAF/Yr Pollen Forecast",
-        "description": "Enter the Yr location ID (e.g., 1-189277)",
+        "description": "Add forecast for selected pollen types for a given location",
         "data": {
           "location_id": "Location ID",
+          "location_name": "Location Name (optional)",
           "pollen_types": "Pollen Types",
           "update_frequency": "Update Frequency (hours)",
           "language": "Language"
+        },
+        "data_description": {
+          "location_id": "The code can be found in the URL of the location on yr.no (e.g., 1-189277)",
+          "location_name": "Override the location name shown in sensor names. Leave empty to use the region name from the NAAF data.",
+          "pollen_types": "Select which pollen types to create sensors for",
+          "update_frequency": "How often to fetch a new forecast",
+          "language": "Language used for sensor names and API data"
         }
       }
     },

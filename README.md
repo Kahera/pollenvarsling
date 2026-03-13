@@ -12,57 +12,51 @@ A custom Home Assistant integration for displaying Norwegian pollen forecasts fr
 5. Search for "Pollenvarsel" and install
 
 ### Manual
-Copy the `custom_components/pollen_naaf_yr` folder to your `custom_components` directory in Home Assistant.
+Copy the `custom_components/pollenvarsel_naaf_yr` folder to your `custom_components` directory in Home Assistant.
 
 ## Configuration
 
-Add this to your `configuration.yaml`:
+Configuration is done through the Home Assistant UI — no `configuration.yaml` editing required.
 
-```yaml
-pollenvarsel_naaf_yr:
-  pollen_types:
-    - hazel # Hassel
-    - alder # Or
-    - willow # Salix ℹ️: id needs verification when pollen season begins
-    - birch # Bjørk ℹ️: id needs verification when pollen season begins
-    - grass # Gress ℹ️: id needs verification when pollen season begins
-    - mugwort # Burot ℹ️: id needs verification when pollen season begins
-  locations:
-    - location_id: "1-189277"
-      location_name: "Molde" # Optional
-    - location_id: "1-92416"
-  language: nb # Optional (default: nb)
-  update_frequency: 1 # Hours (optional, default: 3)
-```
+1. Go to **Settings > Devices & Services**
+2. Click **+ Add Integration**
+3. Search for **Pollenvarsel** and select it
+4. Fill in the form:
 
 ### Configuration Options
 
-- **pollen_types** (required): List of pollen types to track (language-independent IDs). Available types:
-  `hazel`, `alder`, `willow`, `birch`, `grass`, `mugwort`
+- **Location ID** (required): The Yr location ID. The code can be found in the URL of the location on yr.no (see [Finding Location IDs](#finding-location-ids) below).
 
-- **locations** (required): List of locations to monitor
-  - **location_id** (required): Yr location ID (found in the API URL - see below for details)
-  - **location_name** (optional): Your custom name for the location
+- **Location Name** (optional): Override the name shown in sensor names. Leave empty to use the region name from the NAAF data.
 
-  >  ℹ️: Only locations in mainland Norway will work.
+- **Pollen Types** (required): Select which pollen types to create sensors for. Available types:
+  - Hazel (Hassel)
+  - Alder (Or)
+  - Willow (Salix)
+  - Birch (Bjørk)
+  - Grass (Gress)
+  - Mugwort (Burot)
 
-- **language** (optional): Language for pollen type names and distribution levels. Default: `nb`
+  > ℹ️: Only locations in mainland Norway will work.
+
+- **Update Frequency** (optional): How often to fetch a new forecast, in hours. Default: `3`
+
+- **Language** (optional): Language used for sensor names and API data. Default: `nb`
   - `nb` - Norwegian bokmål
   - `nn` - Norwegian nynorsk
-  - `sme` - Northern Sami
   - `en` - English
-  > ℹ️: The friendly_name will contain the english pollen type until that pollen type is starting to release pollen.
-
-- **update_frequency** (optional): How often to fetch data, in hours. Default: `3`
 
 ## Finding Location IDs
 
-Visit https://www.yr.no/nb and search for your location. The location ID is in the response URL, where the ID is located after `daglig-tabell` as such: 
+Visit https://www.yr.no/nb and search for your location. The location ID is in the URL, located after `daglig-tabell`:
+
 `https://www.yr.no/nb/værvarsel/daglig-tabell/{locationID}/Norge/{otherNonRelevantLocationInfo}`
-> Example: 
+
+> Example:
 >
 > `https://www.yr.no/nb/værvarsel/daglig-tabell/1-189277/Norge/M%C3%B8re%20og%20Romsdal/Molde/Molde`
-> where `1-189277` is the ID. 
+>
+> where `1-189277` is the ID.
 
 
 ## Sensors Created
@@ -103,14 +97,9 @@ automation:
           message: "High birch pollen today!"
 ```
 
-## Update Interval
-
-Data is fetched every 3 hours by default. To customize, add the `update_frequency`
-
 ## Troubleshooting
 
 If sensors don't appear:
-1. Restart Home Assistant
-2. Check that location IDs are correct
-3. Verify pollen type IDs are correct (use the language-independent IDs: `hazel`, `alder`, `willow`, `birch` `grass`, `mugwort`)
-4. Check Home Assistant logs for errors
+1. Restart Home Assistant after installing the integration
+2. Check that the location ID is correct (see [Finding Location IDs](#finding-location-ids))
+3. Check Home Assistant logs for errors

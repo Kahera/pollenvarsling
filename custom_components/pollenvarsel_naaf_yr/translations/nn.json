@@ -2,12 +2,21 @@
   "config": {
     "step": {
       "user": {
-        "title": "NAAF/Yr Pollenprognose",
-        "description": "Skriv inn Yr-lokasjonkode (t.d. 1-189277)",
+        "title": "NAAF/Yr Pollenvarsel",
+        "description": "Legg til prognose for valde pollentypar for ein gitt lokasjon",
         "data": {
           "location_id": "Lokasjonkode",
+          "location_name": "Lokasjonnamn (valfritt)",
           "pollen_types": "Pollentypar",
-          "update_frequency": "Oppdateringsfrekvens (timar)"
+          "update_frequency": "Oppdateringsfrekvens (timar)",
+          "language": "Språk"
+        },
+        "data_description": {
+          "location_id": "Koden finn du i URL-en til lokasjonen på yr.no (t.d. 1-189277)",
+          "location_name": "Overstyr stadnamnet som blir vist i sensornamn. La stå tomt for å bruka områdenamnet frå dataet til NAAF.",
+          "pollen_types": "Vel kva pollentypar det skal opprettast sensorar for",
+          "update_frequency": "Kor ofte ny prognose blir henta",
+          "language": "Språk som blir brukt for sensornamn og API-data"
         }
       }
     },
